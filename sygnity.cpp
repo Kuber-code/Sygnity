@@ -151,11 +151,11 @@ void convertVectorToStruct(vector<string> & vecOfStrings, Date & dt1, Date & dt2
         }
 }
 
-void saveContentToFile(string fileName, float monthDifference){
+void saveContentToFile(string fileName, float monthsDifference){
     // Create and open a text file
     ofstream MyFile(fileName);
     // Write to the file
-    MyFile << monthDifference;
+    MyFile << monthsDifference;
     // Close the file
     MyFile.close();
 }
@@ -173,13 +173,12 @@ int main()
     }
     // Alghorith 1: count total days difference and count mounths difference from average amount of days per month in the year (365/12)
     int dayDifference = getDaysDifference(dt1, dt2);
-    cout << "Difference between two dates is " << dayDifference << endl;
-    float monthDifference = convertDaysToMonths(dayDifference);
-    saveContentToFile("output2.txt", monthDifference);
+    float monthsDifference = convertDaysToMonths(dayDifference);
+    saveContentToFile("output2.txt", monthsDifference);
 
     // Alghoritm 2: count total months difference and add incomplete months (rest of days) as percent of current month eg. 0.07 are difference of 2 days in December
-    float monthDifferenceSecondAlghoritm = getMonthsDifference(dt1, dt2) ;
-    saveContentToFile("output.txt", monthDifferenceSecondAlghoritm);   
+    float monthsDifferenceSecondAlghoritm = getMonthsDifference(dt1, dt2) ;
+    saveContentToFile("output.txt", monthsDifferenceSecondAlghoritm);   
 
     system("pause");
     return 0;
