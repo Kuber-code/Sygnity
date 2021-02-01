@@ -6,6 +6,9 @@
         "istream": "cpp",
         "iostream": "cpp",
         "cmath": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "ostream": "cpp",
+        "sstream": "cpp",
+        "xstring": "cpp"
     }
 }
