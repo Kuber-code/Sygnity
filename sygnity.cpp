@@ -7,6 +7,8 @@
 #include <vector>
 #include <sstream>
 #include <cctype>
+#include <ctime>// do uzycia typu daty do obliczenia roznicy w seundach sekund
+// uzyc jeszcze uint64_t
 
 using namespace std;
 
@@ -16,8 +18,8 @@ struct Date {
 
 const int monthDays[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-double roundDoubleToTwoDigits(double var)
-{
+double roundDoubleToTwoDigits(double var) // zastapic funkcja round z cmath.h
+{ 
 	// EXAMPLE:
 	// 37.66666 * 100 = 3766.66 
 	// 3766.66 + .5 = 3767.16    for rounding off value 
@@ -27,7 +29,7 @@ double roundDoubleToTwoDigits(double var)
 	return (double)value / 100;
 }
 
-double getMonthsDifference(Date dt1, Date dt2) {
+double getMonthsDifference(Date dt1, Date dt2) { // to zamienic na to ze stack overflow  https://stackoverflow.com/questions/9987562/determining-the-difference-between-dates
 	// Second Alghoritm:
 	// count months difference between dwo dates
 	long int monthsDifference = (dt2.y * 12 + dt2.m) - (dt1.y * 12 + dt1.m);
@@ -80,7 +82,7 @@ bool getFileContentToVector(string fileName, vector<string> & vecOfStrings)
 	return true;
 }
 
-bool isNumber(const string& s)
+bool isNumber(const string& s)   // w cmath - check if string is a digit  z bilbioteki standardowej
 {
 	string::const_iterator it = s.begin();
 	while (it != s.end() && isdigit(*it)) ++it;
@@ -125,8 +127,8 @@ bool isYearALeapYear(int y)
 
 bool isDayNumberCorrect(int y, int m, int d){
 	cout << "y " << y << endl;
-		cout << "m " << m << endl;
-			cout << "d " << d << endl;
+	cout << "m " << m << endl;
+	cout << "d " << d << endl;
 	if (d < 1 || d > 31){
 		cout << "Day number is NOT a valid number" << endl;
 		return false;
@@ -167,7 +169,7 @@ void convertVectorToStruct(vector<string> & vecOfStrings, Date & dt1, Date & dt2
 		// Split lines form file to structure data, every token is single data eg.: 2020
 		while (getline(stringStream, token, '-')) {
 			//dataVector.push_back(token);
-			if (i == 0) {
+			if (i == 0) {                            ////////  to  do: zamienic te ify na swich , token zmienic nazwe,
 				if (!isNumber(token)) 
 					break;
 				istringstream(token) >> dt1.y;

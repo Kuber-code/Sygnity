@@ -9,6 +9,7 @@
         "vector": "cpp",
         "ostream": "cpp",
         "sstream": "cpp",
-        "xstring": "cpp"
+        "xstring": "cpp",
+        "cctype": "cpp"
     }
 }
