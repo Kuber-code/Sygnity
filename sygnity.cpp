@@ -18,6 +18,16 @@ struct Date {
 
 const int monthDays[12] = { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
+int compensationsForMonths[31];
+//const int compensationsForMonthsOf29[29];
+//const int compensationsForMonthsOf30[30];
+//const int compensationsForMonthsOf31[31];
+void countDayCompensation(int month){
+	month = d
+
+}
+
+
 double roundDoubleToTwoDigits(double var) // zastapic funkcja round z cmath.h
 { 
 	// EXAMPLE:
@@ -29,28 +39,33 @@ double roundDoubleToTwoDigits(double var) // zastapic funkcja round z cmath.h
 	return (double)value / 100;
 }
 
-double getMonthsDifference(Date dt1, Date dt2) { // to zamienic na to ze stack overflow  https://stackoverflow.com/questions/9987562/determining-the-difference-between-dates
+ // to zamienic na to ze stack overflow  https://stackoverflow.com/questions/9987562/determining-the-difference-between-dates
+double getMonthsDifference(Date dt1, Date dt2)
+{
 	// Second Alghoritm:
 	// count months difference between dwo dates
 	long int monthsDifference = (dt2.y * 12 + dt2.m) - (dt1.y * 12 + dt1.m);
+
 	double completeMonthsdoubleDifference = (double)monthsDifference;
 	//cout << "completeMonthsdoubleDifference" << completeMonthsdoubleDifference << endl;
 	// count days difference between dwo dates
 	int daysDifference = dt2.d - dt1.d;
 	if (daysDifference == 0) {
 		// wtedy nie liczyc w ogole dni
+		//totalMonthsDifference
 	}
 	int daysInLastMonth;
 	// check which was last month (need to know how much of the month is one day for this current month eg.: for February is 1/28, for December is 1/31)
 	daysInLastMonth = monthDays[dt2.m - 1];
 	//cout << "daysInLastMonth: " << daysInLastMonth << endl;
 	double lastMonthRestDifference = (double)daysDifference / (double)daysInLastMonth;
+	cout << "lastMonthRestDifference: " << lastMonthRestDifference << endl;
 	double totalMonthsDifference = completeMonthsdoubleDifference + lastMonthRestDifference;
 
 
-	cout << "daysDifference" << daysDifference << endl;
-	cout << "daysInLastMonth" << daysInLastMonth << endl;
-	cout << "lastMonthRestDifference" << lastMonthRestDifference << endl;
+	cout << "daysDifference:  << daysDifference << endl;
+	cout << "daysInLastMonth: " << daysInLastMonth << endl;
+
 	cout << "totalMonthsDifference" << totalMonthsDifference << endl;
 	cout << "completeMonthsdoubleDifference" << completeMonthsdoubleDifference << endl;
 	return roundDoubleToTwoDigits(totalMonthsDifference);
@@ -224,17 +239,58 @@ void saveContentToFile(string fileName, double monthsDifference) {
 	MyFile.close();
 }
 
+tm make_tm(int year, int month, int day)
+{
+	
+	tm tm = {0};
+    tm.tm_year = year - 1900; // years count from 1900
+    tm.tm_mon = month - 1;    // months count from January=0
+    tm.tm_mday = day;         // days count from 1
+    return tm;
+}
+
 int main()
 {
 	// Declare data
 	vector<string> vecOfStrings;
 	Date dt1 = { 2020, 1, 1 };
 	Date dt2 = { 2020, 1, 2 };
+	
 	// Get the contents of file to vector, if the data is valid
 	bool result = getFileContentToVector("input.txt", vecOfStrings);
 	if (result) {
 		convertVectorToStruct(vecOfStrings, dt1, dt2);
 	}
+
+	// Structures representing the two dates
+	tm tm1 = make_tm(dt1.y, dt1.m + 1, dt1.d);
+	tm tm2 = make_tm(dt2.y, dt2.m + 1, dt2.d);
+	//std::tm tm1 = make_tm(2012,4,2);    // April 2nd, 2012
+	//std::tm tm2 = make_tm(2003,2,2);    // February 2nd, 2003
+
+	// Arithmetic time values.
+	// On a posix system, these are seconds since 1970-01-01 00:00:00 UTC
+	std::time_t time1 = std::mktime(&tm1);
+	std::time_t time2 = std::mktime(&tm2);
+
+	
+	cout << endl << "time1 : " << time1 << endl;
+	cout << endl << "time2 : " << time2 << endl;
+
+	// Divide by the number of seconds in a day
+	const int seconds_per_day = 60*60*24;
+	std::time_t dayDifference = (time2 - time1) / seconds_per_day;    
+	std::time_t difference = (time2 - time1);   
+	cout << endl << "difference : " << difference << endl;
+	cout << "dayDifference od funckji chdego : " << dayDifference << endl;
+	// To be fully portable, we shouldn't assume that these are Unix time;
+	// instead, we should use "difftime" to give the difference in seconds:
+	double portable_difference = std::difftime(time1, time2) / seconds_per_day;
+
+
+
+
+
 
 	// Alghoritm 2: count total months difference and add incomplete months (rest of days) as percent of current month eg. 0.64 are difference of 2 days in December
 	double monthsDifferenceSecondAlghoritm = getMonthsDifference(dt1, dt2);
